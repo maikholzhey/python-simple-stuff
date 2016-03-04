@@ -41,8 +41,8 @@ def query_yes_no(question, default="yes") :
 
 def makeFig(): # making the plot
     if descr :
-#         use autoscale of matplotlib
-#         next 3 lines are obsolete
+        # next three lines possible to use but obsolete
+        # matplotlib autoscales window
 #        ymin = min(A)- 10
 #        ymax = max(A)+ 10
 #        plt.ylim(ymin,ymax)
@@ -138,11 +138,11 @@ try:
             f=open('datafile.txt','a')
             # keep plot vector tidy
             if plperf:
-                max = 40
+                cnt_max = 40
             else:
-                max = 20
+                cnt_max = 20
             
-            if(cnt>max):
+            if(cnt>cnt_max):
                 T.pop(0)
                 A.pop(0)
         except KeyboardInterrupt:
