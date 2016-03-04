@@ -41,8 +41,9 @@ def query_yes_no(question, default="yes") :
 
 def makeFig(): # making the plot
     if descr :
-        ymin = float(min(A))- 10
-        ymax = float(max(A))+ 10
+        ymin = 20#min(A)- 10
+        ymax = 40#max(A)+ 10
+        print "i was here"
         plt.ylim(ymin,ymax)
         plt.title('Incoming Data: Arduino Impedanzmessung')
         plt.grid(True)
@@ -50,10 +51,12 @@ def makeFig(): # making the plot
         plt.xlabel('TimeWindow 1/6 s')
         plt.plot(A,label='Impedanz')
         plt.legend(loc='upper right')
+        plt.pause(.00001) # keeps drawnow from crashing
     elif plperf :
-        pwidget.setData(T,A)
+        pwidget.plot(A,clear=True)
     else:
         plt.plot(A)
+        plt.pause(.00001) # keeps drawnow from crashing
 
 print "Open new Folder for saving Data"
 #create new unique path
@@ -68,9 +71,11 @@ print "Initialize..."
 print "Performance \n============"
 print "simple plot \t 6.93 SPS"
 print "annotated plot \t 6.08 SPS"
+print "performance plot \t 36.71 SPS"
 print "without plot \t 157.35 SPS\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \
  \n157.35 SPS = True Sampling Rate\n"
- 
+
+plotok = False 
 descr = False
 plperf = False
 # should plotting be enabled?
@@ -78,7 +83,7 @@ plperf = False
 plotok = query_yes_no("Should incoming Data be plotted?", default="yes")
 # performance 6.93 SPS
 if plotok:
-    plperf = query_yes_no("Do you prefer Quality over Performance?", default="no")
+    plperf = query_yes_no("Do you prefer Performance over Quality?", default="yes")
     if not plperf:
         descr = query_yes_no("Should the plot be annotated?", default="no")
         
@@ -100,11 +105,11 @@ t.write('Started Logging:\t'+ str(startTime) + '\n')
 t.close()
 
 if plperf:
-    pwidget =pg.PlotCurveItem()
+    pwidget =pg.plot(A)
 else:
     plt.ion() # interactive mode to plot live data
     plt.figure() # open a figure
-    plt.show(block=False)
+    plt.show()
     
 cnt=0 # it counts things... number of elements
 
@@ -124,7 +129,6 @@ try:
             
             if plotok :
                 drawnow(makeFig,show_once=True)
-                plt.pause(.00001) # keeps drawnow from crashing
     
             cnt += 1 # important until plot buffer is filled up
             # safe data      
@@ -132,7 +136,12 @@ try:
             f.close()
             f=open('datafile.txt','a')
             # keep plot vector tidy
-            if(cnt>20):
+            if plperf:
+                max = 40
+            else:
+                max = 20
+            
+            if(cnt>max):
                 T.pop(0)
                 A.pop(0)
         except KeyboardInterrupt:
@@ -152,5 +161,7 @@ t.write('Time passed:\t\t'+ str(duration) + '\n')
 t.close()
 
 #close plot Window
-plt.close("all")
+if not plperf:
+    plt.close("all")
+
 print "Logging Terminated"
