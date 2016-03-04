@@ -41,10 +41,11 @@ def query_yes_no(question, default="yes") :
 
 def makeFig(): # making the plot
     if descr :
-        ymin = 20#min(A)- 10
-        ymax = 40#max(A)+ 10
-        print "i was here"
-        plt.ylim(ymin,ymax)
+#         use autoscale of matplotlib
+#         next 3 lines are obsolete
+#        ymin = min(A)- 10
+#        ymax = max(A)+ 10
+#        plt.ylim(ymin,ymax)
         plt.title('Incoming Data: Arduino Impedanzmessung')
         plt.grid(True)
         plt.ylabel('Amplitude')
@@ -161,7 +162,7 @@ t.write('Time passed:\t\t'+ str(duration) + '\n')
 t.close()
 
 #close plot Window
-if not plperf:
-    plt.close("all")
-
+#if not plperf:
+#    plt.close("all")
+plt.close("all")
 print "Logging Terminated"
