@@ -11,7 +11,7 @@ High qaulity plot:
 
 Performance plot:
 
-![hq_plot](https://github.com/maikholzhey/python_scripts/blob/master/fastviewer.png "hq_plot")
+![hq_plot](https://github.com/maikholzhey/python_scripts/blob/master/fast_viewer.png "hq_plot")
 
 Bugs:
 
